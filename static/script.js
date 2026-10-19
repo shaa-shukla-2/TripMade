@@ -125,7 +125,7 @@ async function sendMessage() {
   }
 
   const input = document.getElementById("userInput");
-  const message = input.value.trim();
+ const message = addDefaultDepartureCity(input.value.trim());
 
   if (!message) {
     showError("Please enter your travel request first.");
@@ -169,6 +169,18 @@ async function sendMessage() {
   } finally {
     setLoading(false, "draft");
   }
+}
+
+
+function addDefaultDepartureCity(message) {
+  const hasDepartureCity =
+    /\bfrom\s+[A-Za-z][A-Za-z\s.-]*?(?=\s+(?:to|for|with|including|under|on|in)\b|[,.!?]|$)/i.test(message);
+
+  if (hasDepartureCity) {
+    return message;
+  }
+
+  return `${message} from Mumbai`;
 }
 
 async function submitApproval(approved) {
